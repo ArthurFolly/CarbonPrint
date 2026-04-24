@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcular Pegada - CarbonDrive</title>
+    <link rel="stylesheet" href="../../static/style.css">
+    <style>
+        .hidden { display: none; }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .btn-secondary {
+            border: 1px solid currentColor;
+            background: transparent;
+            padding: 0.55rem 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .form-actions .full {
+            flex: 1;
+        }
+
+        body.page-dark {
+            background: #121212;
+            color: #f2f2f2;
+        }
+
+        body.page-dark .header,
+        body.page-dark .form-card,
+        body.page-dark .help-box,
+        body.page-dark .footer {
+            background: #1e1e1e;
+            color: #f2f2f2;
+        }
+
+        body.page-dark input,
+        body.page-dark select {
+            background: #2c2c2c;
+            color: #f2f2f2;
+            border-color: #4a4a4a;
+        }
+
+        body.page-dark a {
+            color: #d6e8ff;
+        }
+    </style>
+</head>
+<body class="page-light">
+
+<header class="header">
+    <div class="logo">
+        <span class="logo-icon">♻</span>
+        <span>Carbon<span>Drive</span></span>
+    </div>
+
+    <nav class="menu">
+        <a href="landingPage.html">Início</a>
+        <a href="calcular.html" class="active">Calcular Pegada</a>
+        <a href="landingPage.html#sobre">Sobre o Projeto</a>
+        <a href="resultado.html">Resultados</a>
+    </nav>
+
+    <div class="header-actions">
+        <button type="button" id="theme-toggle" class="btn-secondary" aria-label="Alternar modo claro e escuro">
+            🌙 Modo escuro
+        </button>
+        <a href="calcular.html" class="btn-header">Calcular agora</a>
+    </div>
+</header>
+
+<main class="form-page">
+    <section class="form-intro">
+        <div class="circle-icon">🚗</div>
+        <h1>Informe os dados do seu veículo</h1>
+        <p>
+            Preencha as informações abaixo para simular a pegada de carbono
+            estimada do seu carro.
+        </p>
+    </section>
+
+    <section class="form-card">
+        <div class="progress">
+            <div class="progress-item active" id="step-marker-1">
+                <span>1</span>
+                <p>Veículo</p>
+            </div>
+
+            <div class="progress-line"></div>
+
+            <div class="progress-item" id="step-marker-2">
+                <span>2</span>
+                <p>Uso</p>
+            </div>
+
+            <div class="progress-line"></div>
+
+            <div class="progress-item" id="step-marker-3">
+                <span>3</span>
+                <p>Resultado</p>
+            </div>
+        </div>
+
+        <form id="form-veiculo">
+            <div class="form-group">
+                <label for="modelo">Modelo do carro</label>
+                <select id="modelo" name="modelo" required>
+                    <option value="">Selecione o modelo</option>
+                    <option>Honda Civic</option>
+                    <option>Toyota Corolla</option>
+                    <option>Volkswagen Gol</option>
+                    <option>Fiat Argo</option>
+                    <option>Chevrolet Onix</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ano">Ano de fabricação</label>
+                <input type="number" id="ano" name="ano" placeholder="Ex: 2020" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cor">Cor do veículo</label>
+                <select id="cor" name="cor" required>
+                    <option value="">Selecione a cor</option>
+                    <option>Branco</option>
+                    <option>Preto</option>
+                    <option>Prata</option>
+                    <option>Vermelho</option>
+                    <option>Azul</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="combustivel">Tipo de combustível</label>
+                <select id="combustivel" name="combustivel" required>
+                    <option value="">Selecione o combustível</option>
+                    <option>Gasolina</option>
+                    <option>Etanol</option>
+                    <option>Flex</option>
+                    <option>Diesel</option>
+                    <option>Elétrico</option>
+                </select>
+            </div>
+
+            <button type="button" class="btn-primary full" id="btn-continuar">
+                Continuar para o uso
+            </button>
+        </form>
+
+        <form id="form-uso" class="hidden" action="resultado.html">
+            <div class="form-group">
+                <label for="kilometragem">Qual a kilometragem do carro</label>
+                <input type="number" id="kilometragem" name="kilometragem" placeholder="Ex: 52000" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tanque">Tamanho do tanque (litros)</label>
+                <input type="number" id="tanque" name="tanque" placeholder="Ex: 50" required>
+            </div>
+
+            <div class="form-group">
+                <label for="consumo">Quantos km faz por litro</label>
+                <input type="number" id="consumo" name="consumo" placeholder="Ex: 12" step="0.1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="troca-pneu">Quantas vezes o pneu foi trocado</label>
+                <input type="number" id="troca-pneu" name="troca_pneu" placeholder="Ex: 2" required>
+            </div>
+
+            <div class="form-group">
+                <label for="motor-trocado">Já teve motor trocado?</label>
+                <select id="motor-trocado" name="motor_trocado" required>
+                    <option value="">Selecione</option>
+                    <option>Sim</option>
+                    <option>Não</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-secondary full" id="btn-voltar-etapa">
+                    Voltar etapa
+                </button>
+                <button type="submit" class="btn-primary full">
+                    Ver resultado
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <section class="help-box">
+        <strong>🌱 Por que pedimos essas informações?</strong>
+        <p>
+            Esses dados ajudam o sistema a criar uma estimativa inicial
+            da emissão de carbono do veículo.
+        </p>
+    </section>
+</main>
+
+<footer class="footer">
+    <div>
+        <h3>Carbon<span>Drive</span></h3>
+        <p>Tecnologia para uma mobilidade mais consciente.</p>
+    </div>
+
+    <div>
+        <h4>Navegação</h4>
+        <a href="landingPage.html">Início</a>
+        <a href="calcular.html">Calcular Pegada</a>
+        <a href="resultado.html">Resultados</a>
+    </div>
+
+    <div>
+        <h4>Projeto</h4>
+        <a href="#">Metodologia</a>
+        <a href="#">Tecnologias</a>
+        <a href="#">Sobre</a>
+    </div>
+</footer>
+
+<script>
+    const formVeiculo = document.getElementById('form-veiculo');
+    const formUso = document.getElementById('form-uso');
+    const btnContinuar = document.getElementById('btn-continuar');
+    const btnVoltarEtapa = document.getElementById('btn-voltar-etapa');
+    const themeToggle = document.getElementById('theme-toggle');
+    const step1 = document.getElementById('step-marker-1');
+    const step2 = document.getElementById('step-marker-2');
+    const step3 = document.getElementById('step-marker-3');
+
+    function goToStep1() {
+        formUso.classList.add('hidden');
+        formVeiculo.classList.remove('hidden');
+
+        step1.classList.add('active');
+        step2.classList.remove('active');
+        step3.classList.remove('active');
+    }
+
+    function goToStep2() {
+        formVeiculo.classList.add('hidden');
+        formUso.classList.remove('hidden');
+
+        step1.classList.remove('active');
+        step2.classList.add('active');
+        step3.classList.remove('active');
+    }
+
+    btnContinuar.addEventListener('click', () => {
+        if (!formVeiculo.checkValidity()) {
+            formVeiculo.reportValidity();
+            return;
+        }
+
+        goToStep2();
+    });
+
+    btnVoltarEtapa.addEventListener('click', () => {
+        goToStep1();
+    });
+
+    formUso.addEventListener('submit', () => {
+        step2.classList.remove('active');
+        step3.classList.add('active');
+    });
+
+    themeToggle.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('page-dark');
+        document.body.classList.toggle('page-light', !isDark);
+        themeToggle.textContent = isDark ? '☀️ Modo claro' : '🌙 Modo escuro';
+    });
+</script>
+
+</body>
+</html>a
